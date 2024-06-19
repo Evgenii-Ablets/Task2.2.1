@@ -5,11 +5,9 @@ import hiber.model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class UserDaoImp implements UserDao {
@@ -23,12 +21,12 @@ public class UserDaoImp implements UserDao {
     }
 
 
-    public User getUserByCar(String model, int series) {
+    public List<User> getUserByCar(String model, int series) {
         return sessionFactory.getCurrentSession().createQuery(
                 "from User u join fetch u.car where u.car.model = :model and u.car.series = :series", User.class)
                 .setParameter("model", model)
                 .setParameter("series", series)
-                .getResultList().stream().findFirst().orElse(new User("Unknown", "Unknown", "Unknown"));
+                .getResultList();
     }
 
     public void addCar(User user, String model, int series) {
