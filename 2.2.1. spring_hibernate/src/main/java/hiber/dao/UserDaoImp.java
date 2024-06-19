@@ -21,12 +21,14 @@ public class UserDaoImp implements UserDao {
     public void add(User user) {
         sessionFactory.getCurrentSession().save(user);
     }
-    @Transactional
+
+
     public User getUserByCar(String model, int series) {
-        return Optional.ofNullable(sessionFactory.getCurrentSession().createQuery("from User u join fetch u.car where u.car.model = :model and u.car.series = :series", User.class)
+        return sessionFactory.getCurrentSession().createQuery(
+                "from User u join fetch u.car where u.car.model = :model and u.car.series = :series", User.class)
                 .setParameter("model", model)
                 .setParameter("series", series)
-                .getSingleResult()).stream().findFirst().orElse(null);
+                .getResultList().stream().findFirst().orElse(new User("Unknown", "Unknown", "Unknown"));
     }
 
     public void addCar(User user, String model, int series) {
