@@ -13,7 +13,7 @@ public class Car {
     @Column(name = "series")
     private int series;
 
-    @OneToOne(mappedBy = "car")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "car")
     private User user;
 
 
@@ -49,7 +49,10 @@ public class Car {
     public Long getId() {
         return id;
     }
+    public void setUser(User user) {
+        this.user = user;
 
+    }
     @Override
     public String toString() {
         return "Car{" +
@@ -57,4 +60,6 @@ public class Car {
                 ", series=" + series +
                 '}';
     }
+
+
 }
